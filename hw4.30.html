@@ -31,31 +31,37 @@
     context.stroke();
     context.closePath();
 
+    var flag;
 
     canvas.onmousedown = function(){
         canvas.onmousemove = function(ev){
-            var event = ev || window.event;
-        
-            context.beginPath();
-            context.globalCompositeOperation = 'destination-out';
-            context.fillStyle = "black";
-            context.arc(event.clientX, event.clientY, 50, 0, 2 * Math.PI);
-            context.fill();
-            context.stroke();
-            context.closePath();
+            canvas.onmousedown = function(){
+                flag = 1;
+            }
+            if(flag==1){
+                var event = ev || window.event;
+                context.beginPath();
+                context.globalCompositeOperation = 'destination-out';
+                context.fillStyle = "black";
+                context.arc(event.clientX, event.clientY, 50, 0, 2 * Math.PI);
+                context.fill();
+                context.stroke();
+                context.closePath();
+            }
         }
     }
     canvas.onmouseup = function(){
+        flag=0;
         var imgData = context.getImageData(0, 0, 600, 550);
-        var t=0;
+        var m=0;
         for (var i = 0; i < imgData.data.length; i += 4) {
             (function(i){
-                var a = imgData.data[i+3];
-                if(a<10)
-                    t++;
+                var n = imgData.data[i+3];
+                if(n<10)
+                    m++;
             })(i)
         }
-        if(t/(imgData.data.length/4) >= 0.85){
+        if(m/(imgData.data.length/4) >= 0.85){
             context.clearRect(0,0,600,550)
         }
     }
